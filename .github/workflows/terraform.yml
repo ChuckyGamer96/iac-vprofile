@@ -48,6 +48,16 @@ jobs:
         id: validate
         run: terraform validate
 
+      - name: Run Checkov
+        run: |
+          pip install checkov
+          checkov -d .
+
+      - name: Run tfsec
+        run: |
+          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+          tfsec .
+
       - name: Terraform plan
         id: plan
         run: terraform plan -no-color -input=false -out planfile
