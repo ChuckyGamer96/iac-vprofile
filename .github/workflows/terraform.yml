@@ -53,10 +53,14 @@ jobs:
           pip install checkov
           checkov -d . --skip-check CKV_TF_1
 
-      - name: Run tfsec
+      - name: Install tfsec
         run: |
-          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          tfsec .
+          curl -L https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64 -o tfsec
+          chmod +x tfsec
+          sudo mv tfsec /usr/local/bin/tfsec
+
+      - name: Run tfsec
+        run: tfsec .
 
       - name: Terraform plan
         id: plan
