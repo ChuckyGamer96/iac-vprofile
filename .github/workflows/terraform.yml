@@ -33,7 +33,8 @@ jobs:
 
       - name: Setup Terraform with specified version on the runner
         uses: hashicorp/setup-terraform@v2
-        #with:
+        with:
+          terraform_wrapper: false
         #  terraform-version: 1.6.3
 
       - name: Terraform init
@@ -74,6 +75,9 @@ jobs:
       - name: Export plan to JSON
         id: show
         run: terraform show -json planfile > plan.json
+
+      - name: Validate plan.json
+        run: jq empty plan.json
 
       - name: Upload Terraform plan JSON
         uses: actions/upload-artifact@v4
