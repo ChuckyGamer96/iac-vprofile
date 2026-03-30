@@ -81,6 +81,16 @@ jobs:
           name: terraform-plan-json
           path: ./terraform/plan.json
 
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+          chmod +x opa
+          sudo mv opa /usr/local/bin/opa
+
+      - name: Run OPA policy check
+        run: |
+          opa eval -f pretty -i plan.json -d ./opa/policy.rego "data.terraform.security.deny"
+
       - name: Terraform Apply
         id: apple
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
