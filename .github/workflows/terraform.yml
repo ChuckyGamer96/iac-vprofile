@@ -56,6 +56,16 @@ jobs:
       - name: Terraform plan status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+      
+      - name: Export plan to JSON
+        id: show
+        run: terraform show -json planfile > plan.json
+
+      - name: Upload Terraform plan JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-json
+          path: plan.json
 
       - name: Terraform Apply
         id: apple
