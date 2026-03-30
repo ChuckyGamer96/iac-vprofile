@@ -91,44 +91,6 @@ jobs:
           chmod +x opa
           sudo mv opa /usr/local/bin/opa
 
-      - name: Debug OPA input
-        run: |
-          grep -n '"type":"aws_eks_cluster"' plan.json | head
-          grep -n '"public_access_cidrs"' plan.json | head
-          grep -n '"endpoint_public_access"' plan.json | head
-          grep -n '"cidr_blocks"' plan.json | head
-
-      - name: Debug plan values for OPA
-        run: |
-          echo "---- endpoint_public_access ----"
-          jq '.resource_changes[] | select(.type=="aws_eks_cluster") | .change.after.vpc_config' plan.json
-
-          echo "---- public_access_cidrs ----"
-          jq '.resource_changes[] | select(.type=="aws_eks_cluster") | .change.after.vpc_config[]?.public_access_cidrs' plan.json
-
-          echo "---- sg egress ----"
-          jq '.resource_changes[] | select(.type=="aws_security_group_rule") | {address: .address, after: .change.after}' plan.json
-
-      - name: Debug OPA expressions
-        run: |
-          echo "---- OPA test 1 ----"
-          opa eval -f pretty -i plan.json '.resource_changes[_].type'
-
-          echo "---- OPA test 2 ----"
-          opa eval -f pretty -i plan.json 'input.resource_changes[_].type == "aws_eks_cluster"'
-
-          echo "---- OPA test 3 ----"
-          opa eval -f pretty -i plan.json 'input.resource_changes[_].change.after.vpc_config'
-
-          echo "---- OPA test 4 ----"
-          opa eval -f pretty -i plan.json 'input.resource_changes[_].change.after.vpc_config[_].endpoint_public_access'
-
-          echo "---- OPA test 5 ----"
-          opa eval -f pretty -i plan.json 'input.resource_changes[_].change.after.vpc_config[_].public_access_cidrs[_]'
-
-          echo "---- OPA test 6 ----"
-          opa eval -f pretty -i plan.json 'input.resource_changes[_].change.after.cidr_blocks[_]'
-
       - name: Run OPA policy check
         run: |
           opa eval -f pretty -i plan.json -d ../opa/policy.rego "data.terraform.security.deny"
