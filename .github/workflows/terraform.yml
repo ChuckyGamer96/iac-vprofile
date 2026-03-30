@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan-json
-          path: plan.json
+          path: ./terraform/plan.json
 
       - name: Terraform Apply
         id: apple
