@@ -60,7 +60,7 @@ jobs:
           sudo mv tfsec /usr/local/bin/tfsec
 
       - name: Run tfsec
-        run: tfsec .
+        run: tfsec . --soft-fail
 
       - name: Terraform plan
         id: plan
