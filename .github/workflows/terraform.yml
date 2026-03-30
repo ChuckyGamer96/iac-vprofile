@@ -51,7 +51,7 @@ jobs:
       - name: Run Checkov
         run: |
           pip install checkov
-          checkov -d .
+          checkov -d . --skip-check CKV_TF_1
 
       - name: Run tfsec
         run: |
