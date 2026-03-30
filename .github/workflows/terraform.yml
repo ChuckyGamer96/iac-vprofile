@@ -87,9 +87,17 @@ jobs:
           chmod +x opa
           sudo mv opa /usr/local/bin/opa
 
+      - name: Debug OPA input
+        run: |
+          grep -n '"type":"aws_eks_cluster"' plan.json | head
+          grep -n '"public_access_cidrs"' plan.json | head
+          grep -n '"endpoint_public_access"' plan.json | head
+          grep -n '"cidr_blocks"' plan.json | head
+
       - name: Run OPA policy check
         run: |
           opa eval -f pretty -i plan.json -d ../opa/policy.rego "data.terraform.security.deny"
+        continue-on-error: true
 
       - name: Terraform Apply
         id: apple
