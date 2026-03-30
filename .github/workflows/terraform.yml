@@ -89,7 +89,7 @@ jobs:
 
       - name: Run OPA policy check
         run: |
-          opa eval -f pretty -i plan.json -d ./opa/policy.rego "data.terraform.security.deny"
+          opa eval -f pretty -i plan.json -d ../opa/policy.rego "data.terraform.security.deny"
 
       - name: Terraform Apply
         id: apple
