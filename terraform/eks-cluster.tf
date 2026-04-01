@@ -10,6 +10,9 @@ module "eks" {
   cluster_endpoint_public_access               = true
   node_security_group_enable_recommended_rules = true
   cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
+  tags = {
+    Environment = "egress-risk-1"
+  }
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
