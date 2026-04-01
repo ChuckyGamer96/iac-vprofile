@@ -8,7 +8,7 @@ module "eks" {
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.private_subnets
   cluster_endpoint_public_access               = true
-  node_security_group_enable_recommended_rules = false
+  node_security_group_enable_recommended_rules = true
   cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
 
   eks_managed_node_group_defaults = {
