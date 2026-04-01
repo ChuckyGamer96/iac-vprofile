@@ -9,7 +9,7 @@ module "eks" {
   subnet_ids                     = module.vpc.private_subnets
   cluster_endpoint_public_access = false
   tags = {
-    Environment = "prod"
+    Environment = "test2"
   }
 
   eks_managed_node_group_defaults = {
