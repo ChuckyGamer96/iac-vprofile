@@ -5,11 +5,12 @@ module "eks" {
   cluster_name    = local.cluster_name
   cluster_version = "1.27"
 
-  vpc_id                         = module.vpc.vpc_id
-  subnet_ids                     = module.vpc.private_subnets
-  cluster_endpoint_public_access = false
+  vpc_id                               = module.vpc.vpc_id
+  subnet_ids                           = module.vpc.private_subnets
+  cluster_endpoint_public_access       = true
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
   tags = {
-    Environment = "dev1"
+    Environment = "cidr-risk-1"
   }
 
   eks_managed_node_group_defaults = {
