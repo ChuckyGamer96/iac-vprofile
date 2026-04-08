@@ -8,8 +8,8 @@ module "eks" {
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.private_subnets
   cluster_endpoint_public_access               = true
-  node_security_group_enable_recommended_rules = true
-  cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
+  node_security_group_enable_recommended_rules = false
+  cluster_endpoint_public_access_cidrs         = ["10.0.0.0/16"]
   tags = {
     Environment = "4node-risk-1"
   }
