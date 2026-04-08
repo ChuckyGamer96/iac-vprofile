@@ -7,11 +7,11 @@ module "eks" {
 
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.private_subnets
-  cluster_endpoint_public_access               = true
-  node_security_group_enable_recommended_rules = true
-  cluster_endpoint_public_access_cidrs         = ["10.0.0.0/16"]
+  cluster_endpoint_public_access               = false
+  node_security_group_enable_recommended_rules = false
+  cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
   tags = {
-    Environment = "3node-safe-1"
+    Environment = "1node-risk-1"
   }
 
   eks_managed_node_group_defaults = {
@@ -30,24 +30,24 @@ module "eks" {
       desired_size = 2
     }
 
-    two = {
-      name = "node-group-2"
+    #two = {
+    #  name = "node-group-2"
 
-      instance_types = ["t3.small"]
+    #  instance_types = ["t3.small"]
 
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
-    }
+    #  min_size     = 1
+    #  max_size     = 2
+    #  desired_size = 1
+    #}
 
-    three = {
-      name = "node-group-3"
+    #three = {
+    #  name = "node-group-3"
 
-      instance_types = ["t3.small"]
+    #  instance_types = ["t3.small"]
 
-      min_size     = 1
-      max_size     = 2
-      desired_size = 1
-    }
+    #  min_size     = 1
+    #  max_size     = 2
+    #  desired_size = 1
+    #}
   }
 }
