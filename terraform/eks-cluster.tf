@@ -7,11 +7,11 @@ module "eks" {
 
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.private_subnets
-  cluster_endpoint_public_access               = true
-  node_security_group_enable_recommended_rules = false
-  cluster_endpoint_public_access_cidrs         = ["172.16.0.0/12"]
+  cluster_endpoint_public_access               = false
+  node_security_group_enable_recommended_rules = true
+  cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
   tags = {
-    Environment = "mix-safe-2"
+    Environment = "endpoint-off-1"
   }
 
   eks_managed_node_group_defaults = {
