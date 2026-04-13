@@ -1,0 +1,53 @@
+======================================================
+tfsec is joining the Trivy family
+
+tfsec will continue to remain available 
+for the time being, although our engineering 
+attention will be directed at Trivy going forward.
+
+You can read more here: 
+https://github.com/aquasecurity/tfsec/discussions/1994
+======================================================
+
+Result #1 CRITICAL Public cluster access is enabled. 
+────────────────────────────────────────────────────────────────────────────────
+  terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:37
+   via eks-cluster.tf:1-38 (module.eks)
+────────────────────────────────────────────────────────────────────────────────
+   25    resource "aws_eks_cluster" "this" {
+   ..  
+   37  [     endpoint_public_access  = var.cluster_endpoint_public_access (true)
+   ..  
+   91    }
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-eks-no-public-cluster-access
+      Impact EKS can be access from the internet
+  Resolution Don't enable public access to EKS Clusters
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/eks/no-public-cluster-access/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster#endpoint_public_access
+────────────────────────────────────────────────────────────────────────────────
+
+
+Result #2 CRITICAL Cluster allows access from a public CIDR: 0.0.0.0/0. 
+────────────────────────────────────────────────────────────────────────────────
+  terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:38
+   via eks-cluster.tf:1-38 (module.eks)
+────────────────────────────────────────────────────────────────────────────────
+   25    resource "aws_eks_cluster" "this" {
+   ..  
+  modules processed    8
+  blocks processed     904
+  files read           36
+
+  results
+  ──────────────────────────────────────────
+  passed               42
+  ignored              0
+  critical             3
+  high                 0
+  medium               3
+  low                  0
+
+  42 passed, 6 potential problem(s) detected.
