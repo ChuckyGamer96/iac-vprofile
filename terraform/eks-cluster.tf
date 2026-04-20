@@ -8,9 +8,19 @@ module "eks" {
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.public_subnets
   cluster_endpoint_public_access               = true
-  node_security_group_enable_recommended_rules = true
-  cluster_endpoint_public_access_cidrs         = ["172.16.0.0/12"]
+  node_security_group_enable_recommended_rules = false
+  cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
   cluster_enabled_log_types                    = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  node_security_group_additional_rules = {
+    egress_all_custom = {
+      description = "Custom allow all egress"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "egress"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
   tags = {
     Environment = "2node-risk-1"
   }
