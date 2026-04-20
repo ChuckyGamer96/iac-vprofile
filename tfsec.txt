@@ -1,3 +1,4 @@
+
 ======================================================
 tfsec is joining the Trivy family
 
@@ -12,7 +13,7 @@ https://github.com/aquasecurity/tfsec/discussions/1994
 Result #1 CRITICAL Public cluster access is enabled. 
 ────────────────────────────────────────────────────────────────────────────────
   terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:37
-   via eks-cluster.tf:1-38 (module.eks)
+   via eks-cluster.tf:1-41 (module.eks)
 ────────────────────────────────────────────────────────────────────────────────
    25    resource "aws_eks_cluster" "this" {
    ..  
@@ -33,10 +34,110 @@ Result #1 CRITICAL Public cluster access is enabled.
 Result #2 CRITICAL Cluster allows access from a public CIDR: 0.0.0.0/0. 
 ────────────────────────────────────────────────────────────────────────────────
   terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:38
-   via eks-cluster.tf:1-38 (module.eks)
+   via eks-cluster.tf:1-41 (module.eks)
 ────────────────────────────────────────────────────────────────────────────────
    25    resource "aws_eks_cluster" "this" {
    ..  
+   38  [     public_access_cidrs     = var.cluster_endpoint_public_access_cidrs
+   ..  
+   91    }
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-eks-no-public-cluster-access-to-cidr
+      Impact EKS can be accessed from the internet
+  Resolution Don't enable public access to EKS Clusters
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/eks/no-public-cluster-access-to-cidr/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster#vpc_config
+────────────────────────────────────────────────────────────────────────────────
+
+
+Result #3 CRITICAL Security group rule allows egress to multiple public internet addresses. 
+────────────────────────────────────────────────────────────────────────────────
+  terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/node_groups.tf:223
+   via eks-cluster.tf:1-41 (module.eks)
+────────────────────────────────────────────────────────────────────────────────
+  207    resource "aws_security_group_rule" "node" {
+  ...  
+  223  [   cidr_blocks              = lookup(each.value, "cidr_blocks", null)
+  ...  
+  228    }
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-no-public-egress-sgr
+      Impact Your port is egressing data to the internet
+  Resolution Set a more restrictive cidr range
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/no-public-egress-sgr/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group
+────────────────────────────────────────────────────────────────────────────────
+
+
+Results #4-5 MEDIUM Control plane scheduler logging is not enabled. (2 similar results)
+────────────────────────────────────────────────────────────────────────────────
+  terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:25-91
+   via eks-cluster.tf:1-41 (module.eks)
+────────────────────────────────────────────────────────────────────────────────
+   25  ┌ resource "aws_eks_cluster" "this" {
+   26  │   count = local.create ? 1 : 0
+   27  │ 
+   28  │   name                      = var.cluster_name
+   29  │   role_arn                  = local.cluster_role
+   30  │   version                   = var.cluster_version
+   31  │   enabled_cluster_log_types = var.cluster_enabled_log_types
+   32  │ 
+   33  └   vpc_config {
+   ..  
+────────────────────────────────────────────────────────────────────────────────
+  Individual Causes
+  - terraform-aws-modules/eks/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/eks/main.tf:1-41 (module.eks) 2 instances
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-eks-enable-control-plane-logging
+      Impact Logging provides valuable information about access and usage
+  Resolution Enable logging for the EKS control plane
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/eks/enable-control-plane-logging/
+  - https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eks_cluster#enabled_cluster_log_types
+────────────────────────────────────────────────────────────────────────────────
+
+
+Result #6 MEDIUM VPC Flow Logs is not enabled for VPC  
+────────────────────────────────────────────────────────────────────────────────
+  terraform-aws-modules/vpc/aws/home/runner/work/iac-vprofile/iac-vprofile/terraform/.terraform/modules/vpc/main.tf:28-51
+   via vpc.tf:1-26 (module.vpc)
+────────────────────────────────────────────────────────────────────────────────
+   28  ┌ resource "aws_vpc" "this" {
+   29  │   count = local.create_vpc ? 1 : 0
+   30  │ 
+   31  │   cidr_block          = var.use_ipam_pool ? null : var.cidr
+   32  │   ipv4_ipam_pool_id   = var.ipv4_ipam_pool_id
+   33  │   ipv4_netmask_length = var.ipv4_netmask_length
+   34  │ 
+   35  │   assign_generated_ipv6_cidr_block     = var.enable_ipv6 && !var.use_ipam_pool ? true : null
+   36  └   ipv6_cidr_block                      = var.ipv6_cidr
+   ..  
+────────────────────────────────────────────────────────────────────────────────
+          ID aws-ec2-require-vpc-flow-logs-for-all-vpcs
+      Impact Without VPC flow logs, you risk not having enough information about network traffic flow to investigate incidents or identify security issues.
+  Resolution Enable flow logs for VPC
+
+  More Information
+  - https://aquasecurity.github.io/tfsec/v1.28.14/checks/aws/ec2/require-vpc-flow-logs-for-all-vpcs/
+────────────────────────────────────────────────────────────────────────────────
+
+
+  timings
+  ──────────────────────────────────────────
+  disk i/o             944.052µs
+  parsing              436.828182ms
+  adaptation           2.02672ms
+  checks               8.743613ms
+  total                448.542567ms
+
+  counts
+  ──────────────────────────────────────────
+  modules downloaded   0
   modules processed    8
   blocks processed     904
   files read           36

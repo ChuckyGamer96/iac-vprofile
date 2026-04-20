@@ -6,13 +6,13 @@ module "eks" {
   cluster_version = "1.27"
 
   vpc_id                                       = module.vpc.vpc_id
-  subnet_ids                                   = module.vpc.private_subnets
+  subnet_ids                                   = module.vpc.public_subnets
   cluster_endpoint_public_access               = true
   node_security_group_enable_recommended_rules = true
   cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
   cluster_enabled_log_types                    = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
   tags = {
-    Environment = "4node-risk-1"
+    Environment = "2node-risk-1"
   }
 
   eks_managed_node_group_defaults = {
