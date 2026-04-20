@@ -18,7 +18,7 @@ module "eks" {
       from_port   = 0
       to_port     = 0
       type        = "egress"
-      cidr_blocks = ["172.20.0.0/16"]
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
   tags = {
