@@ -51,7 +51,7 @@ module "eks" {
       desired_size = 1
     }
 
-    ##three = {
+    #three = {
     #  name = "node-group-3"
 
     #  instance_types = ["t3.small"]

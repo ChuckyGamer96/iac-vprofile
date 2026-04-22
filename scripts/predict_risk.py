@@ -23,13 +23,13 @@ DROP_COLS = [
 
 def main():
     if len(sys.argv) < 3:
-        print("Usage: python scripts/predict_risk.py <plan.json> <model.pkl>")
+        print("Usage: python ../scripts/predict_risk.py <plan.json> <model.pkl>")
         sys.exit(1)
 
     plan_path = sys.argv[1]
     model_path = sys.argv[2]
 
-    with open("models/training_features.json", "r", encoding="utf-8") as f:
+    with open("../models/training_features.json", "r", encoding="utf-8") as f:
         training_features = json.load(f)
 
     # Extract features from current Terraform plan
