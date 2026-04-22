@@ -85,9 +85,14 @@ jobs:
           name: terraform-plan-json
           path: ./terraform/plan.json
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install Python dependencies
         run: |
-          pip install pandas scikit-learn joblib
+          pip install pandas==2.3.1 scikit-learn==1.7.2 joblib==1.5.1
 
       - name: Run ML risk prediction
         run: |
