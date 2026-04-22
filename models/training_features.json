@@ -1,0 +1,12 @@
+[
+  "resource_change_count",
+  "create_count",
+  "eks_public_endpoint",
+  "public_egress_rule",
+  "security_group_rule_count",
+  "iam_resource_count",
+  "network_resource_count",
+  "sensitive_port_open_count",
+  "nat_gateway_present",
+  "public_subnet_count"
+]

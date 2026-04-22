@@ -85,6 +85,10 @@ jobs:
           name: terraform-plan-json
           path: ./terraform/plan.json
 
+      - name: Run ML risk prediction
+        run: |
+          python scripts/predict_risk.py plan.json models/logistic_regression.pkl || true
+
       - name: Install OPA
         run: |
           curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
