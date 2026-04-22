@@ -91,7 +91,7 @@ jobs:
 
       - name: Run ML risk prediction
         run: |
-          python ../scripts/predict_risk.py plan.json models/logistic_regression.pkl || true
+          python ../scripts/predict_risk.py plan.json ../models/logistic_regression.pkl || true
 
       - name: Install OPA
         run: |
