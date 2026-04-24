@@ -170,35 +170,26 @@ def extract_features(plan_path: str) -> Dict[str, int]:
         if rtype == "aws_eks_cluster":
             print("DEBUG EKS after:")
             print(json.dumps(after, indent=2))
-         # Case 1: direct field
-            if after.get("endpoint_public_access") == True:
-                features["eks_public_endpoint"] = 1
 
-        # Case 2: nested inside vpc_config
             vpc_configs = safe_list(after.get("vpc_config"))
 
             for vpc_cfg in vpc_configs:
                 if not isinstance(vpc_cfg, dict):
                     continue
 
-        # detect public endpoint
                 if vpc_cfg.get("endpoint_public_access") is True:
                     features["eks_public_endpoint"] = 1
 
-        # detect open CIDR
-            public_cidrs = safe_list(vpc_cfg.get("public_access_cidrs"))
+                public_cidrs = safe_list(vpc_cfg.get("public_access_cidrs"))
+                print("DEBUG public_cidrs:", public_cidrs)
 
-            for cidr in public_cidrs:
-                if is_public_cidr(cidr):
-                    features["eks_public_cidr_open"] = 1
-                    features["open_cidr_0_0_0_0"] = 1
+                for cidr in public_cidrs:
+                    print("DEBUG cidr:", cidr)
 
-        # optional direct public_access_cidrs check too
-            public_cidrs_direct = safe_list(after.get("public_access_cidrs"))
-            for cidr in public_cidrs_direct:
-                if is_public_cidr(cidr):
-                    features["eks_public_cidr_open"] = 1
-                    features["open_cidr_0_0_0_0"] = 1
+                    if is_public_cidr(cidr):
+                        print("DEBUG matched public CIDR")
+                        features["eks_public_cidr_open"] = 1
+                        features["open_cidr_0_0_0_0"] = 1
 
             enabled_logs = safe_list(after.get("enabled_cluster_log_types"))
             if not enabled_logs:
