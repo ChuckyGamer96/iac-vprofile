@@ -1,9 +1,13 @@
 [
+  "eks_public_endpoint",
+  "eks_public_cidr_open",
   "public_egress_rule",
+  "open_cidr_0_0_0_0",
   "sensitive_port_open_count",
   "nat_gateway_present",
   "public_subnet_count",
   "unencrypted_resources",
+  "logging_disabled",
   "s3_public_access_disabled",
   "load_balancer_public"
 ]
