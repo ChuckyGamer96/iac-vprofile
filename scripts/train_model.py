@@ -61,26 +61,24 @@ for col in df.columns:
 # ----------------------------
 # 3. Separate features/target
 # ----------------------------
-drop_cols = [
-    "label",
-    "open_cidr_0_0_0_0",
-    "eks_public_cidr_open",
-    "update_count",
-    "delete_count",
-    "internet_gateway_present",
-    "iam_wildcard_action",
-    "iam_wildcard_resource",
+final_features = [
+    "public_egress_rule",
+    "sensitive_port_open_count",
+    "nat_gateway_present",
+    "public_subnet_count",
     "unencrypted_resources",
-    "logging_disabled",
     "s3_public_access_disabled",
     "load_balancer_public",
 ]
 
-X = df.drop(columns=drop_cols, errors="ignore")
-X = X.select_dtypes(include=["number"])
+missing_features = [col for col in final_features if col not in df.columns]
+if missing_features:
+    raise ValueError(f"Missing required feature columns: {missing_features}")
+
+X = df[final_features]
 y = df["label"]
 
-print("\n=== Features Used After Cleanup ===")
+print("\n=== Final Features Used ===")
 print(X.columns.tolist())
 
 print("\n=== Label Distribution ===")
