@@ -8,19 +8,19 @@ module "eks" {
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.public_subnets
   cluster_endpoint_public_access               = false
-  node_security_group_enable_recommended_rules = false
+  node_security_group_enable_recommended_rules = true
   cluster_endpoint_public_access_cidrs         = ["10.0.0.0/16"]
   cluster_enabled_log_types                    = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-  node_security_group_additional_rules = {
-    egress_all_custom = {
-      description = "restricted egres"
-      protocol    = "tcp"
-      from_port   = 443
-      to_port     = 443
-      type        = "egress"
-      cidr_blocks = ["10.0.0.0/16"]
-    }
-  }
+  #node_security_group_additional_rules = {
+  #  egress_all_custom = {
+  #    description = "restricted egres"
+  #    protocol    = "tcp"
+  #    from_port   = 443
+  #    to_port     = 443
+  #    type        = "egress"
+  #    cidr_blocks = ["10.0.0.0/16"]
+  #  }
+  #}
   tags = {
     Environment = "2node-risks-1"
   }
