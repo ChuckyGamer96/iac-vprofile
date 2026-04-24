@@ -173,23 +173,23 @@ def extract_features(plan_path: str) -> Dict[str, int]:
                 features["eks_public_endpoint"] = 1
 
         # Case 2: nested inside vpc_config
-            vpc_configs = safe_list(after.get("vpc_config"))
+        vpc_configs = safe_list(after.get("vpc_config"))
 
-            for vpc_cfg in vpc_configs:
-                if not isinstance(vpc_cfg, dict):
-                    continue
+        for vpc_cfg in vpc_configs:
+            if not isinstance(vpc_cfg, dict):
+                continue
 
         # detect public endpoint
-        if vpc_cfg.get("endpoint_public_access") is True:
-            features["eks_public_endpoint"] = 1
+            if vpc_cfg.get("endpoint_public_access") is True:
+                features["eks_public_endpoint"] = 1
 
         # detect open CIDR
-        public_cidrs = safe_list(vpc_cfg.get("public_access_cidrs"))
+            public_cidrs = safe_list(vpc_cfg.get("public_access_cidrs"))
 
-        for cidr in public_cidrs:
-            if is_public_cidr(cidr):
-                features["eks_public_cidr_open"] = 1
-                features["open_cidr_0_0_0_0"] = 1
+            for cidr in public_cidrs:
+                if is_public_cidr(cidr):
+                    features["eks_public_cidr_open"] = 1
+                    features["open_cidr_0_0_0_0"] = 1
 
         # optional direct public_access_cidrs check too
             public_cidrs_direct = safe_list(after.get("public_access_cidrs"))
