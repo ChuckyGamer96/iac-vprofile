@@ -168,9 +168,6 @@ def extract_features(plan_path: str) -> Dict[str, int]:
             features["nat_gateway_present"] = 1
 
         if rtype == "aws_eks_cluster":
-            print("DEBUG EKS after:")
-            print(json.dumps(after, indent=2))
-
             vpc_configs = safe_list(after.get("vpc_config"))
 
             for vpc_cfg in vpc_configs:
@@ -181,13 +178,10 @@ def extract_features(plan_path: str) -> Dict[str, int]:
                     features["eks_public_endpoint"] = 1
 
                 public_cidrs = safe_list(vpc_cfg.get("public_access_cidrs"))
-                print("DEBUG public_cidrs:", public_cidrs)
 
                 for cidr in public_cidrs:
-                    print("DEBUG cidr:", cidr)
 
                     if is_public_cidr(cidr):
-                        print("DEBUG matched public CIDR")
                         features["eks_public_cidr_open"] = 1
                         features["open_cidr_0_0_0_0"] = 1
 

@@ -92,12 +92,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install pandas==2.3.1 scikit-learn==1.7.2 joblib==1.5.1
-
-      - name: Debug EKS CIDR in plan
-        run: |
-          grep -n "public_access_cidrs" plan.json | head -20 || true
-          grep -n "0.0.0.0/0" plan.json | head -20 || true    
+          pip install pandas==2.3.1 scikit-learn==1.7.2 joblib==1.5.1 
 
       - name: Run ML risk prediction
         run: |
