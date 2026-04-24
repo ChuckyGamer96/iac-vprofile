@@ -168,6 +168,8 @@ def extract_features(plan_path: str) -> Dict[str, int]:
             features["nat_gateway_present"] = 1
 
         if rtype == "aws_eks_cluster":
+            print("DEBUG EKS after:")
+            print(json.dumps(after, indent=2))
          # Case 1: direct field
             if after.get("endpoint_public_access") == True:
                 features["eks_public_endpoint"] = 1
