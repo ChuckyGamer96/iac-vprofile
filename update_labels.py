@@ -7,7 +7,6 @@ def compute_score(row):
 
     # 🔴 Severe
     severe_flags = [
-        row["eks_public_endpoint"],
         row["eks_public_cidr_open"],
         row["open_cidr_0_0_0_0"],
         row["logging_disabled"],
