@@ -7,19 +7,7 @@ import pandas as pd
 
 from extract_features import extract_features
 
-DROP_COLS = [
-    "open_cidr_0_0_0_0",
-    "eks_public_cidr_open",
-    "update_count",
-    "delete_count",
-    "internet_gateway_present",
-    "iam_wildcard_action",
-    "iam_wildcard_resource",
-    "unencrypted_resources",
-    "logging_disabled",
-    "s3_public_access_disabled",
-    "load_balancer_public",
-]
+DROP_COLS = []
 
 def main():
     if len(sys.argv) < 3:

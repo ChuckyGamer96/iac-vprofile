@@ -22,7 +22,7 @@ module "eks" {
     }
   }
   tags = {
-    Environment = "2node-risk-1"
+    Environment = "2node-risks-1"
   }
 
   eks_managed_node_group_defaults = {
