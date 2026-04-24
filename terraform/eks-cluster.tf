@@ -7,7 +7,7 @@ module "eks" {
 
   vpc_id                                       = module.vpc.vpc_id
   subnet_ids                                   = module.vpc.public_subnets
-  cluster_endpoint_public_access               = false
+  cluster_endpoint_public_access               = true
   node_security_group_enable_recommended_rules = false
   cluster_endpoint_public_access_cidrs         = ["0.0.0.0/0"]
   cluster_enabled_log_types                    = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
