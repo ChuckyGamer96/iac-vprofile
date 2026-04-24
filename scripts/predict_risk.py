@@ -7,7 +7,11 @@ import pandas as pd
 
 from extract_features import extract_features
 
-DROP_COLS = []
+DROP_COLS = [
+    "label",
+    "risk_score",
+    "has_severe",
+]
 
 def main():
     if len(sys.argv) < 3:
