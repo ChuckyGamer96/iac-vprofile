@@ -71,7 +71,6 @@ final_features = [
     "public_subnet_count",
     "unencrypted_resources",
     "logging_disabled",
-    "s3_public_access_disabled",
     "load_balancer_public",
 ]
 

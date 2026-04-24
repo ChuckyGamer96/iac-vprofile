@@ -16,7 +16,7 @@ def compute_score(row):
     # 🟡 Medium
     if row["public_egress_rule"] == 1:
         score += 1
-    if row["sensitive_port_open_count"] >= 3:
+    if row["sensitive_port_open_count"] >= 3 and row["open_cidr_0_0_0_0"] == 1:
         score += 2
     if row["unencrypted_resources"] > 0:
         score += 2
@@ -25,8 +25,6 @@ def compute_score(row):
     if row["nat_gateway_present"] == 0:
         score += 1
     if row["public_subnet_count"] < 3:
-        score += 1
-    if row["s3_public_access_disabled"] == 0:
         score += 1
 
     return score, any(severe_flags)
